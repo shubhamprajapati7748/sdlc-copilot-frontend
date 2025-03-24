@@ -1,10 +1,25 @@
 import React, { useState } from "react";
 import { Send } from "lucide-react";
-import type { ChatMessage } from "../types";
+import type { ChatMessage, ProjectRequirements } from "../types";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const requirements = location.state?.requirements as ProjectRequirements;
+  
+
+  const handleApproveAndContinue = () => {
+        // In a real app, you'd save the completion status to state management or backend
+        navigate("/sdlc", { 
+            state: { 
+                requirements,
+                completedPhases: ['requirements']
+            } 
+        });
+    };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +70,12 @@ export default function ChatInterface() {
 
       <form onSubmit={handleSubmit} className="p-4 border-t border-gray-800">
         <div className="flex space-x-2">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Approve & Continue</button>
+          <button
+                onClick={handleApproveAndContinue}
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors duration-200"
+            >
+                Approve & Continue
+            </button>
           <input
             type="text"
             value={input}

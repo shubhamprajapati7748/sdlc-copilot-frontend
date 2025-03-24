@@ -9,8 +9,16 @@ import UserStoriesPhase from "../phases/UserStoriesPhase";
 export default function SDLC() {
   const location = useLocation();
   const requirements = location.state?.requirements as ProjectRequirements;
+  const completedPhases = location.state?.completedPhases || [];
   const [selectedPhase, setSelectedPhase] = useState<SDLCPhase>("requirements");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  // If requirements phase is completed, automatically navigate to user stories
+  React.useEffect(() => {
+    if (completedPhases.includes('requirements') && selectedPhase === 'requirements') {
+      setSelectedPhase('user-stories');
+    }
+  }, [completedPhases, selectedPhase]);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -20,6 +28,7 @@ export default function SDLC() {
           onPhaseSelect={setSelectedPhase}
           isCollapsed={isSidebarCollapsed}
           onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          completedPhases={completedPhases}
         />
 
         <div className="flex-1 flex flex-col">
@@ -27,8 +36,8 @@ export default function SDLC() {
             <h2 className="text-xl">{requirements?.title}</h2>
           </div>
 
-          {selectedPhase == 'requirements' && <RequirementsPhase />}
-          {selectedPhase == 'user-stories' && <UserStoriesPhase />}
+          {selectedPhase === 'requirements' && <RequirementsPhase />}
+          {selectedPhase === 'user-stories' && <UserStoriesPhase />}
 
           {/* <div className="flex-1 p-6 overflow-y-auto">
             <h3 className="text-xl font-semibold mb-4 capitalize">
