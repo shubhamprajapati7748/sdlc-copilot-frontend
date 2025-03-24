@@ -4,7 +4,7 @@ export interface ProjectRequirements {
   objectives: string[];
 }
 
-export type SDLCPhase = 'requirements' | 'design' | 'development' | 'testing' | 'deployment' | 'maintenance';
+export type SDLCPhase = 'requirements' | 'user-stories' | 'functional-design' | 'technical-design' | 'code-development' | 'security' | 'testing' | 'deployment' | 'maintenance';
 
 export interface ChatMessage {
   id: string;

@@ -7,6 +7,9 @@ import {
   TestTube,
   Upload,
   Settings,
+  Shield,
+  Book,
+  Layers,
 } from "lucide-react";
 import type { SDLCPhase } from "../types";
 
@@ -19,8 +22,11 @@ interface Props {
 
 const phases: { id: SDLCPhase; icon: React.ElementType; label: string }[] = [
   { id: "requirements", icon: FileText, label: "Requirements" },
-  { id: "design", icon: Palette, label: "Design" },
-  { id: "development", icon: Code, label: "Development" },
+  { id: "user-stories", icon: Book, label: "User Stories" },
+  { id: "functional-design", icon: Palette, label: "Functional Design" },
+  { id: "technical-design", icon: Layers, label: "Technical Design" },
+  { id: "code-development", icon: Code, label: "Code Development" },
+  { id: "security", icon: Shield, label: "Security" },
   { id: "testing", icon: TestTube, label: "Testing" },
   { id: "deployment", icon: Upload, label: "Deployment" },
   { id: "maintenance", icon: Settings, label: "Maintenance" },

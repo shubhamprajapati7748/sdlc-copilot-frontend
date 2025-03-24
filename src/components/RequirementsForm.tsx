@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Send } from "lucide-react";
+import { CloudCog, CloudHail, Send } from "lucide-react";
 import type { ProjectRequirements } from "../types";
 
 interface Props {
@@ -8,9 +8,9 @@ interface Props {
 
 export default function RequirementsForm({ onSubmit }: Props) {
   const [requirements, setRequirements] = useState<ProjectRequirements>({
-    title: "",
-    description: "",
-    objectives: [""],
+    title: "PayMate: Your Ultimate Payment Companion",
+    description: "PayMate is a comprehensive payment application that allows users to perform seamless transactions using the Unified Payments Interface (UPI). Beyond basic payments, PayMate offers features such as quick loans, bill payments, and a user-friendly interface, making it a one-stop solution for all financial needs.",
+    objectives: ["Implement multi-factor authentication, including biometrics (fingerprint and facial recognition) and MPIN, to secure user accounts.​", "Enable users to link multiple bank accounts and perform instant fund transfers using UPI.", "Provide users with access to instant micro-loans with minimal documentation.", "Allow users to pay utility bills such as electricity, water, gas, and broadband directly through the app."],
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,7 +41,8 @@ export default function RequirementsForm({ onSubmit }: Props) {
           onChange={(e) =>
             setRequirements((prev) => ({ ...prev, title: e.target.value }))
           }
-          className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4"
+          placeholder="e.g. Task management app, E-commerce Platform, etc."
+          className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 text-sm"
           required
         />
       </div>
@@ -62,15 +63,16 @@ export default function RequirementsForm({ onSubmit }: Props) {
               description: e.target.value,
             }))
           }
-          rows={4}
-          className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4"
+          rows={2}
+          placeholder="e.g. Description of the project in detail..."
+          className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 text-sm"
           required
         />
       </div>
 
-      {/* <div>
+      <div>
         <label className="block text-sm font-medium text-gray-300 mb-2">
-          Project Objectives
+          Project Requirements 
         </label>
         {requirements.objectives.map((objective, index) => (
           <input
@@ -82,8 +84,8 @@ export default function RequirementsForm({ onSubmit }: Props) {
               newObjectives[index] = e.target.value;
               setRequirements(prev => ({ ...prev, objectives: newObjectives }));
             }}
-            className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 mb-2 py-3 px-4"
-            placeholder={`Objective ${index + 1}`}
+            className="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 mb-2 py-3 px-4 text-sm"
+            placeholder={`Requirement ${index + 1}`}
             required
           />
         ))}
@@ -92,9 +94,9 @@ export default function RequirementsForm({ onSubmit }: Props) {
           onClick={addObjective}
           className="text-sm text-blue-500 hover:text-blue-400 py-2"
         >
-          + Add another objective
+          + Add another requirement
         </button> 
-      </div> */}
+      </div>
 
       <button
         type="submit"
