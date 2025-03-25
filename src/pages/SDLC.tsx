@@ -5,6 +5,7 @@ import ChatInterface from "../components/ChatInterface";
 import type { SDLCPhase, ProjectRequirements } from "../types";
 import RequirementsPhase from "../phases/RequirementsPhase";
 import UserStoriesPhase from "../phases/UserStoriesPhase";
+import FunctionalDesignPhase from "../phases/FunctionalDesignPhase";
 
 export default function SDLC() {
   const location = useLocation();
@@ -15,8 +16,11 @@ export default function SDLC() {
 
   // If requirements phase is completed, automatically navigate to user stories
   React.useEffect(() => {
-    if (completedPhases.includes('requirements') && selectedPhase === 'requirements') {
-      setSelectedPhase('user-stories');
+    if (
+      completedPhases.includes("requirements") &&
+      selectedPhase === "requirements"
+    ) {
+      setSelectedPhase("user-stories");
     }
   }, [completedPhases, selectedPhase]);
 
@@ -36,8 +40,10 @@ export default function SDLC() {
             <h2 className="text-xl">{requirements?.title}</h2>
           </div>
 
-          {selectedPhase === 'requirements' && <RequirementsPhase />}
-          {selectedPhase === 'user-stories' && <UserStoriesPhase />}
+          {selectedPhase === "requirements" && <RequirementsPhase />}
+          {selectedPhase === "user-stories" && <UserStoriesPhase />}
+          {selectedPhase === "functional-design" && <FunctionalDesignPhase />}
+          {/* {selectedPhase === "technical-design" && <TechnicalDesignPhase />} */}
 
           {/* <div className="flex-1 p-6 overflow-y-auto">
             <h3 className="text-xl font-semibold mb-4 capitalize">
