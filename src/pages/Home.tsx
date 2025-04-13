@@ -1,14 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RequirementsForm from "../components/RequirementsForm";
 import type { ProjectRequirements } from "../types";
+import { BACKEND_URL } from "../../config";
+import Loading from "../components/Loading";
+import ToastError from "../components/ToastError";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (requirements: ProjectRequirements) => {
-    // In a real app, you'd save this to state management or backend
-    navigate("/sdlc", { state: { requirements } });
+  const handleSubmit = async (requirements: ProjectRequirements) => {
+    setLoading(true);
+    // console.log(requirements)
+    try {
+      // console.log(BACKEND_URL)
+      const payload = {
+        title: requirements.title,
+        description: requirements.description,
+        requirements: requirements.objectives,
+      }
+      // console.log(payload)
+      const response = await fetch(`${BACKEND_URL}/stories/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("failed to call /stories/generate API");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+      setLoading(false);
+      // In a real app, you'd save this to state management or backend
+      navigate("/sdlc", { state: { requirements, data } });
+
+    } catch (error) {
+      console.error("error calling /stories/generate API:", error);
+      setLoading(false);
+      ToastError(error)
+    }
   };
 
   return (
@@ -27,6 +63,7 @@ export default function Home() {
           <RequirementsForm onSubmit={handleSubmit} />
         </div>
       </div>
+      {loading && <Loading />}
     </div>
   );
 }

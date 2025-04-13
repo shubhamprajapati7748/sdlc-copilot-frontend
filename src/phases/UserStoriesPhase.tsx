@@ -1,57 +1,42 @@
 import { useLocation } from "react-router-dom";
 import { ProjectRequirements, UserStories } from "../types";
-import { useState } from "react";
+import React, { useState } from "react";
+import Loading from "../components/Loading";
 
 export default function UserStoriesPhase() {
   const location = useLocation();
+  const data = location.state?.data;
+  const [loading, setLoading] = useState(true);
   //   const requirements = location.state?.requirements as UserStories;
 
   const [userStories, setUserStories] = useState<UserStories>({
     messages: [],
-    user_stories: [
-      {
-        id: "US-101",
-        title: "User Login",
-        description: "As a user, I want to log in using email and password.",
-        acceptance_criteria: [
-          "User can input email and password",
-          "System validates credentials",
-          "User is redirected after login",
-        ],
-      },
-      {
-        id: "US-102",
-        title: "Start a New Game",
-        description:
-          "As a player, I want to start a new game of Snake and Ladder, so that I can begin playing immediately.",
-        acceptance_criteria: [
-          "The game initializes with an empty board.",
-          "All players start at the first square.",
-          "The game is set to the first player's turn.",
-        ],
-      },
-      {
-        id: "US-103",
-        title: "Play the Game",
-        description: "As a player, I want to play the game, so that I can win.",
-        acceptance_criteria: [
-          "The game allows players to move their tokens based on the roll of a die.",
-          "The game checks for ladders and snakes on the player's token.",
-          "The game ends when a player reaches the last square.",
-        ],
-      },
-      {
-        id: "US-104",
-        title: "End the Game",
-        description:
-          "As a player, I want to end the game, so that I can see the results.",
-        acceptance_criteria: [
-          "The game displays the final positions of all players.",
-          "The game displays the winner.",
-        ],
-      },
-    ],
+    user_stories: [],
   });
+
+  React.useEffect(() => {
+    // console.log(data.user_stories)
+    // console.log(data.user_stories[0].story_id)
+    // console.log(location.state?.["user-stories"].user_stories)
+    setLoading(true)
+    if (location.state?.["user-stories"]?.user_stories) {
+      console.log("inside")
+      setUserStories(prevState => ({
+        ...prevState,
+        user_stories: location.state?.["user-stories"].user_stories,
+      }))
+      setLoading(false)
+      return
+    }
+    if (data.user_stories) {
+      setUserStories(prevState => ({
+        ...prevState,
+        user_stories: [...prevState.user_stories, ...data.user_stories],
+      }))
+      setLoading(false)
+    }
+    // console.log(userStories.user_stories)
+  }, [location.state])
   const badgeColors = [
     "bg-blue-900/50 text-blue-300",
     "bg-green-900/50 text-green-300",
@@ -60,6 +45,10 @@ export default function UserStoriesPhase() {
     "bg-pink-900/50 text-pink-300",
     "bg-teal-900/50 text-teal-300",
   ];
+
+  if(loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex-1 p-6 overflow-y-auto bg-gray-900">
@@ -80,7 +69,7 @@ export default function UserStoriesPhase() {
               const colorClass = badgeColors[index % badgeColors.length];
               return (
                 <div
-                  key={userStory.id}
+                  key={userStory.story_id}
                   className={`bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl shadow-xl border border-gray-600 hover:scale-[1.01] transition-transform duration-300 ease-in-out`}
                 >
                   <div className="grid md:grid-cols-2 gap-0">
@@ -90,7 +79,7 @@ export default function UserStoriesPhase() {
                         <span
                           className={`text-xs font-bold uppercase tracking-wide  px-3 py-1 rounded-full  ${colorClass}`}
                         >
-                          {userStory.id}
+                          {userStory.story_id}
                         </span>
                       </div>
                       <h4 className="text-2xl font-bold text-white">
